@@ -1,7 +1,7 @@
 import { ConflictException, Inject } from '@nestjs/common'
 import { UserEntity } from '../entities/user.entity'
 import { UsersRepository } from '../repositories/users-repository'
-import { FirebaseAuthService } from 'src/config/firebase/firebase-auth.service'
+import { FirebaseService } from 'src/config/firebase/firebase.service'
 
 interface CreateUserUseCaseRequest {
   name: string
@@ -20,7 +20,7 @@ export class CreateUserUseCase {
   constructor(
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
-    private firebaseAuthService: FirebaseAuthService,
+    private firebaseService: FirebaseService,
   ) { }
 
   async execute({
@@ -44,7 +44,7 @@ export class CreateUserUseCase {
 
     let firebaseUser
     try {
-      firebaseUser = await this.firebaseAuthService.createUser({ email, password })
+      firebaseUser = await this.firebaseService.createUser({ email, password })
     } catch (error) {
       if (error.code) {
         throw new ConflictException(error)

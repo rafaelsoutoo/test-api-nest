@@ -1,7 +1,8 @@
-import { admin } from "src/config/firebase/firebase-admin"
 import { UsersRepository } from "../users-repository"
 import { Injectable } from "@nestjs/common"
+import { admin } from "src/config/firebase/firebase-admin"
 import { UserEntity } from "src/users/entities/user.entity"
+
 
 @Injectable()
 export class FirebaseUserRepository implements UsersRepository {
