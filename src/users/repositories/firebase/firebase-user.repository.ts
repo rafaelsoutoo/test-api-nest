@@ -18,6 +18,24 @@ export class FirebaseUserRepository implements UsersRepository {
       id: doc.id,
       name: data.name,
       email: data.email,
+      cpf: data.cpf,
+      phone: data.phone,
+      role: data.role || 'admin',
+      createdAt: data.created_at?.toDate() || new Date(),
+    }
+  }
+  async findByCPF(cpf: string): Promise<UserEntity | null> {
+    const snapshot = await this.collection.where('cpf', '==', cpf).limit(1).get()
+    if (snapshot.empty) return null
+
+    const doc = snapshot.docs[0]
+    const data = doc.data()
+
+    return {
+      id: doc.id,
+      name: data.name,
+      email: data.email,
+      cpf: data.cpf,
       phone: data.phone,
       role: data.role || 'admin',
       createdAt: data.created_at?.toDate() || new Date(),
@@ -38,6 +56,7 @@ export class FirebaseUserRepository implements UsersRepository {
       id: uid,
       name: userData.name,
       email: userData.email,
+      cpf: data.cpf,
       phone: userData.phone,
       role: userData.role || 'admin',
       createdAt: now,

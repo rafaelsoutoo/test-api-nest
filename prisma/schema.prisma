@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,12 +14,13 @@ enum Role {
 }
 
 model User {
-  id            String   @id            // Firebase UID
-  name          String
-  phone         String?
-  email         String   @unique
-  role          Role     @default(admin)
-  createdAt    DateTime @default(now())
+  id        String   @id
+  name      String
+  phone     String
+  email     String   @unique
+  cpf       String   @unique
+  role      Role     @default(admin)
+  createdAt DateTime @default(now())
 
   @@map("users")
 }

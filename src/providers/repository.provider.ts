@@ -8,10 +8,10 @@ export const RepositoryProviders: Provider[] = [
   {
     provide: UsersRepository,
     useFactory: (
-      prismaRepo: PrismaUserRepository,
-      firebaseRepo: FirebaseUserRepository
+      prismaRepository: PrismaUserRepository,
+      firebaseRepository: FirebaseUserRepository
     ) => {
-      return env.DATABASE_TYPE === 'firebase' ? firebaseRepo : prismaRepo
+      return env.DATABASE_TYPE === 'firebase' ? firebaseRepository : prismaRepository
     },
     inject: [PrismaUserRepository, FirebaseUserRepository],
   },

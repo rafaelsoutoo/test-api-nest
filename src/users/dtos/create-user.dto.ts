@@ -3,10 +3,11 @@ import {
     IsNotEmpty,
     IsString,
     Length,
+    IsEnum,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateUserDto {
+export class CreateUserDTO {
     @ApiProperty({ description: "The user's first name" })
     @IsNotEmpty()
     @IsString()
@@ -23,6 +24,11 @@ export class CreateUserDto {
     @IsEmail()
     email: string;
 
+    @ApiProperty({ description: "The user's cpf address" })
+    @IsNotEmpty()
+    @Length(11)
+    cpf: string;
+
     @ApiProperty({ description: "The user's password" })
     @IsNotEmpty()
     @Length(6, 100)
@@ -33,5 +39,6 @@ export class CreateUserDto {
         example: 'admin',
     })
     @IsNotEmpty()
+    @IsEnum(['admin', 'superAdmin'], { message: 'role must be admin or superAdmin' })
     role: 'admin' | 'superAdmin';
 }

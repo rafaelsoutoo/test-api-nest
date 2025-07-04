@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { CreateUserUseCase } from './use-cases/create-user.use-case'
-import { CreateUserDto } from './dtos/register-user.dto'
+import { CreateUserDTO } from './dtos/create-user.dto'
 
 @Controller('users')
 export class UsersController {
@@ -8,8 +8,8 @@ export class UsersController {
 
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
-  async createUser(@Body() body: CreateUserDto): Promise<any> {
+  async createUser(@Body() body: CreateUserDTO): Promise<any> {
     const user = await this.createUserUseCase.execute(body)
-    return { user }
+    return user 
   }
 }

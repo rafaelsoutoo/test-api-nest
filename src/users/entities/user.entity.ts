@@ -2,7 +2,8 @@ export interface UserEntity {
   id?: string
   name: string
   email: string
-  phone?: string
+  cpf: string
+  phone: string
   role: 'admin' | 'superAdmin'
-  createdAt: Date
+  createdAt?: Date
 }

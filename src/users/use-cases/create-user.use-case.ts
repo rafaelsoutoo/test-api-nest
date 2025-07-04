@@ -6,6 +6,7 @@ import { FirebaseAuthService } from 'src/config/firebase/firebase-auth.service'
 interface CreateUserUseCaseRequest {
   name: string
   email: string
+  cpf: string
   phone: string
   role: 'admin' | 'superAdmin'
   password: string
@@ -20,22 +21,27 @@ export class CreateUserUseCase {
     @Inject(UsersRepository)
     private usersRepository: UsersRepository,
     private firebaseAuthService: FirebaseAuthService,
-  ) {}
+  ) { }
 
   async execute({
     name,
     email,
     phone,
+    cpf,
     role,
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const existingUser = await this.usersRepository.findByEmail(email)
+    const existingEmailUser = await this.usersRepository.findByEmail(email)
+    const existingCpfUser = await this.usersRepository.findByCPF(cpf)
 
-    if (existingUser) {
-      throw new ConflictException('E-mail já cadastrado.')
+
+    if (existingEmailUser) {
+      throw new ConflictException('email already existing')
+    }
+    if (existingCpfUser) {
+      throw new ConflictException('cpf already existing')
     }
 
-    // Cria no Auth do Firebase
     let firebaseUser
     try {
       firebaseUser = await this.firebaseAuthService.createUser({ email, password })
@@ -43,14 +49,14 @@ export class CreateUserUseCase {
       if (error.code) {
         throw new ConflictException(error)
       }
-      throw error // re-lança outros erros
+      throw error
     }
 
-    // Salva no repositório, usando o uid do Auth
     const user = await this.usersRepository.create({
-      uid: firebaseUser.uid,
+      id: firebaseUser.uid,
       name,
       email,
+      cpf,
       phone,
       role,
     })

@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { plainToInstance } from 'class-transformer'
 import { validateSync } from 'class-validator'
-import { EnvVariables } from 'src/dtos/env.dto'
+import { EnvVariables } from 'src/env/env.dto'
 
 // parse env vars into class
 const envVariables = plainToInstance(EnvVariables, process.env, {
