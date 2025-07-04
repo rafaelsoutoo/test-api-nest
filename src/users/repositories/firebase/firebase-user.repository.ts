@@ -38,14 +38,14 @@ export class FirebaseUserRepository implements UsersRepository {
       cpf: data.cpf,
       phone: data.phone,
       role: data.role || 'admin',
-      createdAt: data.created_at?.toDate() || new Date(),
+      createdAt: data.createdAt?.toDate() || new Date()
     }
   }
 
   async create(data: any): Promise<UserEntity> {
     const now = new Date()
-    const { uid, ...userData } = data
-    const docRef = this.collection.doc(uid)
+    const { id, ...userData } = data
+    const docRef = this.collection.doc(id)
     await docRef.set({
       ...userData,
       role: userData.role || 'admin',
@@ -53,7 +53,7 @@ export class FirebaseUserRepository implements UsersRepository {
     })
 
     return {
-      id: uid,
+      id: id,
       name: userData.name,
       email: userData.email,
       cpf: data.cpf,
