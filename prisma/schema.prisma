@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  superAdmin
+}
+
+model User {
+  id            String   @id            // Firebase UID
+  name          String
+  phone         String?
+  email         String   @unique
+  role          Role     @default(admin)
+  createdAt    DateTime @default(now())
+
+  @@map("users")
+}
